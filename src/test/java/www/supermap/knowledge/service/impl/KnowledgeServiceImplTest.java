@@ -6,13 +6,18 @@ import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-public class KnowledgeServiceImplTest {
+import www.supermap.knowledge.utils.ConfigUtil;
 
+public class KnowledgeServiceImplTest {
+	private static final Logger logger = LoggerFactory.getLogger(KnowledgeServiceImplTest.class);
+	
 	@Test
 	public void testAddAllDataSet() {
 		String path1 = KnowledgeServiceImplTest.class.getClassLoader().getResource("\\").getPath();
@@ -37,6 +42,9 @@ public class KnowledgeServiceImplTest {
 	}
 	
 	@Test
+	/**
+	 * 可以直接将空字符串或者空文件读取出来，转成空json对象
+	 */
 	public void test2(){
 		String path = "config\\haha.json";
 		File file = new File(path);
@@ -47,6 +55,11 @@ public class KnowledgeServiceImplTest {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		String jsonString = new ConfigUtil().getInstance().readJsonFile(path);
+		JSONObject jsonObject = JSONObject.parseObject(jsonString);
+		if(jsonObject == null){
+			logger.debug("json文件转换后的对象为空");
 		}
 	}
 

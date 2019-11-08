@@ -8,30 +8,22 @@ import com.supermap.data.Geometry;
  */
 public class MyGeometry {
 
+	//图形的信息
 	private Geometry geometry;
-	private String databaseName;
+//	private String databaseName;
+	//在recordset中的序号，数据表中的主键
 	private int primaryIndex;
-	private String dataSourceName;
-	private String datasourcePath;
-
+//	private String dataSourceName;
+//	private String datasourcePath;
+	//该图形所在的网格id
+	private long gridId;
+	
 	// private String time;
 
 	public MyGeometry() {
 		// TODO Auto-generated constructor stub
-	}
-
-	public MyGeometry(Geometry geometry, String databaseName, int primaryIndex, String dataSourceName,
-			String datasourcePath) {
-		super();
-		this.geometry = geometry;
-		this.databaseName = databaseName;
-		this.primaryIndex = primaryIndex;
-		this.dataSourceName = dataSourceName;
-		this.datasourcePath = datasourcePath;
-	}
+	}	
 	
-	
-
 	public MyGeometry(Geometry geometry, int primaryIndex) {
 		super();
 		this.geometry = geometry;
@@ -41,42 +33,29 @@ public class MyGeometry {
 	public Geometry getGeometry() {
 		return geometry;
 	}
-
-	public String getDatabaseName() {
-		return databaseName;
-	}
-
+	
 	public int getPrimaryIndex() {
 		return primaryIndex;
 	}
 
-	public String getDataSourceName() {
-		return dataSourceName;
-	}
-
-	public String getDatasourcePath() {
-		return datasourcePath;
-	}
 
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
-	}
-
-	public void setDatabaseName(String databaseName) {
-		this.databaseName = databaseName;
 	}
 
 	public void setPrimaryIndex(int primaryIndex) {
 		this.primaryIndex = primaryIndex;
 	}
 
-	public void setDataSourceName(String dataSourceName) {
-		this.dataSourceName = dataSourceName;
+	public long getGridId() {
+		return gridId;
 	}
 
-	public void setDatasourcePath(String datasourcePath) {
-		this.datasourcePath = datasourcePath;
+	public void setGridId(long gridId) {
+		this.gridId = gridId;
 	}
-
+	
+	
 	
 }
+

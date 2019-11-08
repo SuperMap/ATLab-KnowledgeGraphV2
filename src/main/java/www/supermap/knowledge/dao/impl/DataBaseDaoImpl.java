@@ -16,9 +16,9 @@ import com.supermap.data.Recordset;
 import com.supermap.data.Workspace;
 
 import www.supermap.knowledge.beans.MyGeometry;
-import www.supermap.knowledge.dao.DataBaseDao;
+import www.supermap.knowledge.dao.DataSourceDao;
 
-public class DataBaseDaoImpl implements DataBaseDao {
+public class DataBaseDaoImpl implements DataSourceDao {
 
 	public DataBaseDaoImpl() {
 		// TODO Auto-generated constructor stub

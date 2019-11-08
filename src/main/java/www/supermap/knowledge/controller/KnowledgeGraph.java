@@ -1,4 +1,4 @@
-package www.supermap.knowledge.beans;
+package www.supermap.knowledge.controller;
 
 import com.supermap.data.DatasourceConnectionInfo;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.Map;
 import www.supermap.knowledge.service.KnowledgeSercive;
 
 /**
- * 知识图谱实体类
+ * 知识图谱控制类
  * @author SunYasong
  *
  */
@@ -17,6 +17,10 @@ public class KnowledgeGraph {
 	private String dataStorePath;
 	//图谱构建使用的网格级别
 	private int gridLevel = 13;
+	
+	public KnowledgeGraph(){
+		
+	}
 
 	public KnowledgeGraph(String dataStorePath, int gridLevel) {
 		super();
@@ -40,16 +44,18 @@ public class KnowledgeGraph {
 		this.gridLevel = gridLevel;
 	}
 	
-
-	public boolean addByDataSetName(DatasourceConnectionInfo dataSourceConnectionInfo, String[] arType){
-		//待处理
-		knowledgeservice.addDataSetByName(dataSourceConnectionInfo, this, arType);
-		return false;	
+	public boolean addDataByType(String dataFile, String...arTypes){
+		return knowledgeservice.addDataByType(dataFile, arTypes);
+	}
+	
+	public boolean addAllData(String dataFile){
+		return knowledgeservice.addAllData(dataFile);
 	}
 	
 	public Map<String, ArrayList<String>> query(double dLatitude, double dLongitude, double iRadius, String[] arType, String time){
 		//待处理
-		knowledgeservice.query(this, dLatitude, dLongitude, iRadius, arType, time);
+//		knowledgeservice.query(this, dLatitude, dLongitude, iRadius, arType, time);
 		return null;
 	}
+	
 }

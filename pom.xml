@@ -53,6 +53,10 @@
 			<artifactId>fastjson</artifactId>
 			<version>1.2.62</version>
 		</dependency>
-
+		<dependency>
+			<groupId>io.sgr</groupId>
+			<artifactId>s2-geometry-library-java</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
 </project>

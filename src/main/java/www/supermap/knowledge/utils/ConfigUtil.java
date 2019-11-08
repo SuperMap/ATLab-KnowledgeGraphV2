@@ -23,7 +23,8 @@ public class ConfigUtil {
 	private String defaultDataSourceConfigurationFilePath = "config\\dataSource.json";
 	
 	// 默认知识图谱配置文件
-	private String defaultKnowledgeGraphConfigurationFilePath = "";
+	private String defaultKnowledgeGraphConfigFilePath = "config\\knowledgeConfig.json";
+	
 	
 	public ConfigUtil() {
 		// TODO Auto-generated constructor stub
@@ -104,12 +105,14 @@ public class ConfigUtil {
 	public int getDataSourceConnectionId(DatasourceConnectionInfo datasourceConnectionInfo){
 		//读取json配置文件，与传进来的datasourceConnectionInfo进行对比，返回一个数，全局代表该连接
 		//待完善
-		String jsonString = readJsonFile(defaultDataSourceConfigurationFilePath);
-		JSONObject jsonObject = JSONObject.parseObject(jsonString);
-		if(jsonObject == null){
-			logger.debug("json文件转换后的对象为空");
-			
-		}
-		return -1;
+		
+//		String jsonString = readJsonFile(defaultDataSourceConfigurationFilePath);
+//		JSONObject jsonObject = JSONObject.parseObject(jsonString);
+//		if(jsonObject == null){
+//			logger.debug("json文件转换后的对象为空");
+//			
+//		}
+		
+		return 1;
 	}
 }

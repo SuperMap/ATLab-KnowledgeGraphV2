@@ -6,7 +6,7 @@ import com.supermap.data.DatasourceConnectionInfo;
 
 import www.supermap.knowledge.beans.MyGeometry;
 
-public interface DataBaseDao {
+public interface DataSourceDao {
 
 	public ArrayList<MyGeometry> selectGeometrysByType(DatasourceConnectionInfo dataSourceConnectionInfo, String[] arType);
 
