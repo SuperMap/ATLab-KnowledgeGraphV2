@@ -1,49 +1,59 @@
 package www.supermap.knowledge.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.supermap.data.DatasourceConnectionInfo;
 
+import www.supermap.knowledge.beans.GeoInfo;
+import www.supermap.knowledge.beans.KnowledgeGraph;
+import www.supermap.knowledge.beans.Parameter;
 import www.supermap.knowledge.dao.JenaDao;
 import www.supermap.knowledge.service.AppService;
-import www.supermap.knowledge.service.KnowledgeSercive;
+import www.supermap.knowledge.service.KnowledgeService;
 import www.supermap.knowledge.utils.ConfigUtil;
 
 public class App {
-	AppService appService;
-	KnowledgeGraph knowledgeGraph;
-	JenaDao jenDao;
+	private KnowledgeService knowledgeService;
+	private AppService appService;
+	// 前置工作：检查默认图谱配置json文件，没有则创建
+	static{
+		File knowledgeConfigFile = new File(Parameter.KNOWLEDGE_CONFIG_FILE_PATH);
+		if(!knowledgeConfigFile.exists()){
+			try {
+				knowledgeConfigFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	public App() {
 		
 	}
 	
-	public KnowledgeGraph createKnowledgeGraph(String storePath, int gridLevel){
-		KnowledgeGraph knowledgeGraph = appService.createNewKnowledgeGraph(storePath,gridLevel);
+	public KnowledgeGraph getKnowledgeGraph(String storePath, int gridLevel){
+		KnowledgeGraph knowledgeGraph = appService.getKnowledgeGraph(storePath, gridLevel);
 		return knowledgeGraph;
 	}
 	
 	public List<KnowledgeGraph> listAllKnowledgeGraph(){
 		List<KnowledgeGraph> allKnowledgeGraph = appService.getAllKnowledgeGraph();
-		//读配置文件得出
-		return null;
+		return allKnowledgeGraph;
 	}
-	public App loadKnowledgeGraph(String storePath){
-		
-		return new App();
-	}
-	public boolean addDataByType(String dataFile, String...arTypes){
-		return knowledgeservice.addDataByType(dataFile, arTypes);
+
+	public boolean addDataByType(KnowledgeGraph targetKnowledgeGraph, String sourceDataFile, String...arTypes){
+		return knowledgeService.addDataByType(targetKnowledgeGraph, sourceDataFile, arTypes);
 	}
 	
-	public boolean addAllData(String dataFile){
-		return knowledgeservice.addAllData(dataFile);
+	public boolean addAllData(KnowledgeGraph targetKnowledgeGraph, String sourceDataFile){
+		return addDataByType(targetKnowledgeGraph, sourceDataFile, null);
 	}
 	
-	public Map<String, ArrayList<String>> query(double dLatitude, double dLongitude, double iRadius, String[] arType, String time){
-		//待处理
-//		knowledgeservice.query(this, dLatitude, dLongitude, iRadius, arType, time);
-		return null;
+	public Map<String, List<GeoInfo>> query(KnowledgeGraph targetKnowledgeGraph, double dLongitude, double dLatitude, double iRadius, String... arType){
+		//后期要加入时间属性  String time
+		return knowledgeService.queryByType(targetKnowledgeGraph, dLongitude, dLatitude, iRadius, arType);
 	}
 }

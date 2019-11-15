@@ -20,7 +20,7 @@ public class KnowledgeServiceImplTest {
 	
 	@Test
 	public void testAddAllDataSet() {
-		String path1 = KnowledgeServiceImplTest.class.getClassLoader().getResource("\\").getPath();
+//		String path1 = KnowledgeServiceImplTest.class.getClassLoader().getResource("\\").getPath();
 //		System.out.println(path1);
 //		String path = "C:\\sdsdsd\\dfdf\\dfasd\\aswerg\\123.udb";
 //		String s = "\\\\";
@@ -30,14 +30,12 @@ public class KnowledgeServiceImplTest {
 //			System.out.println(string);
 //		}
 //		System.out.println(a[a.length-1]);
-		String jsonStr = "{\"data\":{\"pow\":100,\"net\":99,\"dev\":69},\"success\":true,\"message\":\"成功\"}";
-		JSONObject obj = JSONObject.parseObject(jsonStr);
+//		String jsonStr = "{\"data\":{\"pow\":100,\"net\":99,\"dev\":69},\"success\":true,\"message\":\"成功\"}";
+//		JSONObject obj = JSONObject.parseObject(jsonStr);
 //		JSONArray a = JSON.parseArray(jsonStr);
-		obj.getJSONObject("data").put("dev", 40);
+//		obj.getJSONObject("data").put("dev", 40);
 //		System.out.println(obj.getJSONObject("data"));
-		String jsonsds = "";
-		JSONObject obj1 = JSONObject.parseObject(jsonsds);
-		System.out.println(obj1);
+
 		
 	}
 	
@@ -61,6 +59,8 @@ public class KnowledgeServiceImplTest {
 		if(jsonObject == null){
 			logger.debug("json文件转换后的对象为空");
 		}
+		
+		
 	}
 
 }

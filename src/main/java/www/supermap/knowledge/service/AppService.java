@@ -2,7 +2,7 @@ package www.supermap.knowledge.service;
 
 import java.util.List;
 
-import www.supermap.knowledge.controller.KnowledgeGraph;
+import www.supermap.knowledge.beans.KnowledgeGraph;
 
 public interface AppService {
 
@@ -12,9 +12,8 @@ public interface AppService {
 	 * @param gridLevel 网格等级
 	 * @return 成功了返回该KnowledgeGraph,失败了返回null
 	 */
-	KnowledgeGraph createNewKnowledgeGraph(String storePath, int gridLevel);
+	KnowledgeGraph getKnowledgeGraph(String storePath, int gridLevel);
 
-	List<KnowledgeGraph> getAllKnowledgeGraph();
-	
+	List<KnowledgeGraph> getAllKnowledgeGraph();	
 
 }

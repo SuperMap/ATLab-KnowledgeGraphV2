@@ -3,28 +3,31 @@ package www.supermap.knowledge.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.Reader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSONObject;
-import com.supermap.data.DatasourceConnectionInfo;
 
+import www.supermap.knowledge.beans.KnowledgeGraph;
+import www.supermap.knowledge.beans.Parameter;
+
+/**
+ * 配置文件工具类
+ * 配置文件数据结构：{{"1":knowledge},{"2":knowledge} ...}
+ * @author SunYasong
+ *
+ */
 public class ConfigUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(ConfigUtil.class);
 	
 	private static ConfigUtil configuration;
-	
-	// 默认数据源配置文件位置
-	private String defaultDataSourceConfigurationFilePath = "config\\dataSource.json";
-	
-	// 默认知识图谱配置文件
-	private String defaultKnowledgeGraphConfigFilePath = "config\\knowledgeConfig.json";
-	
 	
 	public ConfigUtil() {
 		// TODO Auto-generated constructor stub
@@ -47,17 +50,6 @@ public class ConfigUtil {
 		
 		return configuration;
 	}
-	
-	
-	
-	public String getDefaultDataSourceConfigurationFilepath() {
-		return defaultDataSourceConfigurationFilePath;
-	}
-
-	public void setDefaultDataSourceConfigurationFilepath(String defaultDataSourceConfigurationFilepath) {
-		this.defaultDataSourceConfigurationFilePath = defaultDataSourceConfigurationFilepath;
-	}
-
 	
 	/**
      * 读取json文件，返回json串
@@ -97,22 +89,38 @@ public class ConfigUtil {
         }
     }
 	
+    /**
+     * 将json字符串写入文件
+     * @param fileName
+     * @return
+     */
+    public boolean writeJsonFile(String filePath, String jsonStr) {
+		try {
+			FileWriter fw = new FileWriter(filePath);
+			PrintWriter out = new PrintWriter(fw);
+			out.write(jsonStr);
+			out.println();
+			fw.close();
+			out.close();
+			return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+    }
     
+
 	/**
-	 * 从dataSourceConfigurationFile中获得全局id
+	 * 将知识图谱信息添加到配置文件中
+	 * @param knowledgeGraph
 	 * @return
 	 */
-	public int getDataSourceConnectionId(DatasourceConnectionInfo datasourceConnectionInfo){
-		//读取json配置文件，与传进来的datasourceConnectionInfo进行对比，返回一个数，全局代表该连接
-		//待完善
-		
-//		String jsonString = readJsonFile(defaultDataSourceConfigurationFilePath);
-//		JSONObject jsonObject = JSONObject.parseObject(jsonString);
-//		if(jsonObject == null){
-//			logger.debug("json文件转换后的对象为空");
-//			
-//		}
-		
-		return 1;
+	public boolean addKnowledgeGraphToConfigFile(KnowledgeGraph knowledgeGraph) {
+		String jsonString = readJsonFile(Parameter.KNOWLEDGE_CONFIG_FILE_PATH);
+		JSONObject jsonObject = JSONObject.parseObject(jsonString);
+		int knowledgeGraphId = jsonObject==null?0:jsonObject.size();
+		String jsonKey = String.valueOf(knowledgeGraphId);
+		jsonObject.put(jsonKey, knowledgeGraph);
+		return writeJsonFile(Parameter.KNOWLEDGE_CONFIG_FILE_PATH, jsonObject.toJSONString());
 	}
 }
