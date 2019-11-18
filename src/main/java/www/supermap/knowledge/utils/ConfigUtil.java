@@ -15,86 +15,87 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSONObject;
 
 import www.supermap.knowledge.beans.KnowledgeGraph;
-import www.supermap.knowledge.beans.Parameter;
 
 /**
- * 配置文件工具类
- * 配置文件数据结构：{{"1":knowledge},{"2":knowledge} ...}
+ * 配置文件工具类 配置文件数据结构：{{"1":knowledge},{"2":knowledge} ...}
+ * 
  * @author SunYasong
  *
  */
 public class ConfigUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(ConfigUtil.class);
-	
+
 	private static ConfigUtil configuration;
-	
+
 	public ConfigUtil() {
 		// TODO Auto-generated constructor stub
 	}
 
-	//单例
-	public static ConfigUtil getInstance(){
-		try{
-			if(configuration == null){
+	// 单例
+	public static ConfigUtil getInstance() {
+		try {
+			if (configuration == null) {
 				synchronized (ConfigUtil.class) {
-					if(configuration == null){
+					if (configuration == null) {
 						configuration = new ConfigUtil();
 					}
 				}
 			}
-			
-		} catch(Exception e){
+
+		} catch (Exception e) {
 			logger.debug("单例类获取失败");
 		}
-		
+
 		return configuration;
 	}
-	
+
 	/**
-     * 读取json文件，返回json串
-     * @param fileName
-     * @return
-     */
-    public String readJsonFile(String fileName) {
-        String jsonStr = "";
-        File jsonFile = new File(fileName);
-        
-        // 文件不存在则创建
-        if(!jsonFile.exists()){
+	 * 读取json文件，返回json串
+	 * 
+	 * @param fileName
+	 * @return
+	 */
+	public String readJsonFile(String fileName) {
+		String jsonStr = "";
+		File jsonFile = new File(fileName);
+
+		// 文件不存在则创建
+		if (!jsonFile.exists()) {
 			try {
 				jsonFile.createNewFile();
 				return null;
 			} catch (IOException e) {
-				logger.debug(fileName+"创建失败");
+				logger.debug(fileName + "创建失败");
 			}
 		}
-        
-        try {
-            FileReader fileReader = new FileReader(jsonFile);
-            Reader reader = new InputStreamReader(new FileInputStream(jsonFile),"utf-8");
-            int ch = 0;
-            StringBuffer sb = new StringBuffer();
-            while ((ch = reader.read()) != -1) {
-                sb.append((char) ch);
-            }
-            fileReader.close();
-            reader.close();
-            jsonStr = sb.toString();
-            return jsonStr;
-        } catch (IOException e) {
-            e.printStackTrace();
-            logger.debug("读取json文件失败");
-            return null;
-        }
-    }
-	
-    /**
-     * 将json字符串写入文件
-     * @param fileName
-     * @return
-     */
-    public boolean writeJsonFile(String filePath, String jsonStr) {
+
+		try {
+			FileReader fileReader = new FileReader(jsonFile);
+			Reader reader = new InputStreamReader(new FileInputStream(jsonFile), "utf-8");
+			int ch = 0;
+			StringBuffer sb = new StringBuffer();
+			while ((ch = reader.read()) != -1) {
+				sb.append((char) ch);
+			}
+			fileReader.close();
+			reader.close();
+			jsonStr = sb.toString();
+			return jsonStr;
+		} catch (IOException e) {
+			e.printStackTrace();
+			logger.debug("读取json文件失败");
+			return null;
+		}
+	}
+
+	/**
+	 * 将json字符串写入文件
+	 * 
+	 * @param fileName
+	 * @return
+	 */
+	public boolean writeJsonFile(String filePath, String jsonStr) {
 		try {
 			FileWriter fw = new FileWriter(filePath);
 			PrintWriter out = new PrintWriter(fw);
@@ -107,20 +108,53 @@ public class ConfigUtil {
 			e.printStackTrace();
 		}
 		return false;
-    }
-    
+	}
 
 	/**
 	 * 将知识图谱信息添加到配置文件中
+	 * 
 	 * @param knowledgeGraph
 	 * @return
 	 */
 	public boolean addKnowledgeGraphToConfigFile(KnowledgeGraph knowledgeGraph) {
-		String jsonString = readJsonFile(Parameter.KNOWLEDGE_CONFIG_FILE_PATH);
+		String jsonString = readJsonFile(Parameter.KNOWLEDGE_CONFIG_FILE_NAME);
 		JSONObject jsonObject = JSONObject.parseObject(jsonString);
-		int knowledgeGraphId = jsonObject==null?0:jsonObject.size();
+		int knowledgeGraphId = 0;
+		//空配置文件jsonObject是null，
+		if(jsonObject == null){
+			jsonObject = new JSONObject();
+		}else{
+			knowledgeGraphId = jsonObject.size();
+		}
 		String jsonKey = String.valueOf(knowledgeGraphId);
 		jsonObject.put(jsonKey, knowledgeGraph);
-		return writeJsonFile(Parameter.KNOWLEDGE_CONFIG_FILE_PATH, jsonObject.toJSONString());
+		return writeJsonFile(Parameter.KNOWLEDGE_CONFIG_FILE_NAME, jsonObject.toJSONString());
 	}
+
+	/**
+	 * 判断图谱是否存在
+	 * 注意：如果jena数据文件夹存在    或者      json配置文件存在 都认为其存在
+	 * @param knowledgeGraph
+	 * @return
+	 */
+	private boolean existKnowledge(KnowledgeGraph knowledgeGraph) {
+		//1. 判断文件夹是否存在
+		String dataStorePath = knowledgeGraph.getDataStorePath();
+		File file = new File(dataStorePath);
+		if(file.exists()){
+			if(file.isDirectory()){
+				return true;
+			}
+		}
+		//2. 判断json配置文件中该knowledge是否存在
+		String jsonString = readJsonFile(Parameter.KNOWLEDGE_CONFIG_FILE_NAME);
+		JSONObject jsonObject = JSONObject.parseObject(jsonString);
+		if(jsonObject == null){
+			// 2.1 配置文件为空
+			return false;
+		}else{
+			return jsonObject.containsValue(knowledgeGraph);
+		}
+	}
+	
 }

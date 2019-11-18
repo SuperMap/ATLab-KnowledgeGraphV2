@@ -7,18 +7,19 @@ import www.supermap.knowledge.service.KnowledgeService;
 
 /**
  * 知识图谱控制类
+ * 
  * @author SunYasong
  *
  */
 public class KnowledgeGraph {
-	
-	//数据存储的根目录
+
+	// 数据存储的根目录
 	private String dataStorePath;
-	//图谱构建使用的网格级别
+	// 图谱构建使用的网格级别
 	private int gridLevel;
-	
-	public KnowledgeGraph(){
-		
+
+	public KnowledgeGraph() {
+
 	}
 
 	public KnowledgeGraph(String dataStorePath, int gridLevel) {
@@ -34,11 +35,18 @@ public class KnowledgeGraph {
 	public int getGridLevel() {
 		return gridLevel;
 	}
+	
+	public void setDataStorePath(String dataStorePath) {
+		this.dataStorePath = dataStorePath;
+	}
+
+	public void setGridLevel(int gridLevel) {
+		this.gridLevel = gridLevel;
+	}
 
 	@Override
 	public String toString() {
 		return "KnowledgeGraph [dataStorePath=" + dataStorePath + ", gridLevel=" + gridLevel + "]";
 	}
 
-	
 }

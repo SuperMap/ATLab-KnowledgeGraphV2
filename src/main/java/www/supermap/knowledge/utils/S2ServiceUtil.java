@@ -180,7 +180,7 @@ public class S2ServiceUtil {
 		cover.setMinLevel(gridLevel);
 		ArrayList<S2CellId> covering = new ArrayList<S2CellId>();
 		cover.getCovering(cap, covering);
-		
+
 		List<Long> idList = new ArrayList<Long>();
 		for (S2CellId s2CellId : covering) {
 			idList.add(s2CellId.id());

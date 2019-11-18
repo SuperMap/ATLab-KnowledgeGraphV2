@@ -2,65 +2,49 @@ package www.supermap.knowledge.service.impl;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-
-import www.supermap.knowledge.utils.ConfigUtil;
+import www.supermap.knowledge.beans.GeoInfo;
+import www.supermap.knowledge.beans.KnowledgeGraph;
+import www.supermap.knowledge.dao.impl.JenaDaoImpl;
 
 public class KnowledgeServiceImplTest {
-	private static final Logger logger = LoggerFactory.getLogger(KnowledgeServiceImplTest.class);
-	
-	@Test
-	public void testAddAllDataSet() {
-//		String path1 = KnowledgeServiceImplTest.class.getClassLoader().getResource("\\").getPath();
-//		System.out.println(path1);
-//		String path = "C:\\sdsdsd\\dfdf\\dfasd\\aswerg\\123.udb";
-//		String s = "\\\\";
-//		System.out.println(s);
-//		String[] a = path.split(s);
-//		for (String string : a) {
-//			System.out.println(string);
-//		}
-//		System.out.println(a[a.length-1]);
-//		String jsonStr = "{\"data\":{\"pow\":100,\"net\":99,\"dev\":69},\"success\":true,\"message\":\"成功\"}";
-//		JSONObject obj = JSONObject.parseObject(jsonStr);
-//		JSONArray a = JSON.parseArray(jsonStr);
-//		obj.getJSONObject("data").put("dev", 40);
-//		System.out.println(obj.getJSONObject("data"));
 
-		
-	}
-	
 	@Test
-	/**
-	 * 可以直接将空字符串或者空文件读取出来，转成空json对象
-	 */
-	public void test2(){
-		String path = "config\\haha.json";
-		File file = new File(path);
-		if(!file.exists()){
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	public void testQueryByType() {
+		String dataStorePath = "test";
+		int gridLevel = 13;
+		String dataSourceName = "SampleData\\sample.udb";
+		String[] arTypes = {"停车场_1"};
+		KnowledgeServiceImpl knowledgeServiceImpl = new KnowledgeServiceImpl();
+		KnowledgeGraph knowledgeGraph = new KnowledgeGraph(dataStorePath, gridLevel);
+		
+		Map<String, List<GeoInfo>> infos = knowledgeServiceImpl.queryByType(knowledgeGraph, 106.553833, 29.6001, 1000, arTypes);
+		for (Entry<String, List<GeoInfo>> entry : infos.entrySet()) {
+			System.out.println(entry.getKey());
+			for (GeoInfo geoInfo : entry.getValue()) {
+				System.out.println(geoInfo);
 			}
+			System.out.println();
 		}
-		String jsonString = new ConfigUtil().getInstance().readJsonFile(path);
-		JSONObject jsonObject = JSONObject.parseObject(jsonString);
-		if(jsonObject == null){
-			logger.debug("json文件转换后的对象为空");
-		}
-		
-		
+		System.out.println(infos.size());
+	}
+
+	@Test
+	public void testAddDataByType() {
+		String dataStorePath = "test";
+		int gridLevel = 13;
+		String dataSourceName = "SampleData\\sample.udb";
+		String[] arTypes = {"停车场_1"};
+		KnowledgeServiceImpl knowledgeServiceImpl = new KnowledgeServiceImpl();
+		KnowledgeGraph knowledgeGraph = new KnowledgeGraph(dataStorePath, gridLevel);
+		boolean actual = knowledgeServiceImpl.addDataByType(knowledgeGraph, dataSourceName, arTypes);
+		System.out.println(actual);
 	}
 
 }

@@ -7,6 +7,12 @@ import java.io.File;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.alibaba.fastjson.JSONObject;
+
+import www.supermap.knowledge.beans.KnowledgeGraph;
+import www.supermap.knowledge.utils.ConfigUtil;
+import www.supermap.knowledge.utils.Parameter;
+
 public class AppTest {
 
 	@Test
@@ -17,7 +23,8 @@ public class AppTest {
 	@Test
 	public void testGetKnowledgeGraph() {
 		App app = new App();
-		app.getKnowledgeGraph("hello", 13);
+		KnowledgeGraph knowledgeGraph = app.getKnowledgeGraph("test", 13);
+		System.out.println(knowledgeGraph);
 	}
 
 	@Test
@@ -37,7 +44,8 @@ public class AppTest {
 
 	@Test
 	public void testQuery() {
-		fail("Not yet implemented");
+//		App app = new App();
+//		app.deleteKnowledge();
 	}
 
 }

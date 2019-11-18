@@ -3,7 +3,7 @@ package www.supermap.knowledge.beans;
 import java.util.List;
 
 public class Grid {
-	
+
 	private long gridId;
 	private List<MyGeometry> myGeometrys;
 

@@ -21,7 +21,7 @@ import www.supermap.knowledge.beans.MyGeometry;
 import www.supermap.knowledge.dao.DataSourceDao;
 
 public class DataSourceDaoImpl implements DataSourceDao {
-
+	
 	@Override
 	public HashMap<String, ArrayList<String>> selectAllDataSourceByFile(String dataFile) {
 		HashMap<String, ArrayList<String>> dataSourceAndDataSetNames = new HashMap<String, ArrayList<String>>();
@@ -109,15 +109,6 @@ public class DataSourceDaoImpl implements DataSourceDao {
 		return myGeometrys;
 	}
 
-	private Workspace openWorkSpace(String dataFile) {
-		Workspace workspace = new Workspace();
-		WorkspaceConnectionInfo workspaceConnectionInfo = new WorkspaceConnectionInfo();
-		workspaceConnectionInfo.setType(WorkspaceType.SMWU);
-		workspaceConnectionInfo.setServer(dataFile);
-		workspace.open(workspaceConnectionInfo);
-		return workspace;
-	}
-
 	@Override
 	public GeoInfo selectRecordById(String dataSourceName, String dataSetName, int recordId) {
 		// 打开数据源
@@ -130,10 +121,10 @@ public class DataSourceDaoImpl implements DataSourceDao {
 		DatasetVector dataSetVector = (DatasetVector) dataSet;
 		Recordset recordSet = dataSetVector.getRecordset(false, CursorType.STATIC);
 		recordSet.moveTo(recordId);
-		
+
 		// 构造GeoInfo类
 		GeoInfo geoInfo = new GeoInfo(recordSet);
-		
+
 		// 关闭数据
 		dataSet.close();
 		dataSource.close();
